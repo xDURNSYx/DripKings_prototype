@@ -1,0 +1,8 @@
+﻿{
+    "commandCenter":  {
+                          "bearerTokenEnv":  "COMMAND_CENTER_TOKEN",
+                          "baseUrl":  "http://3.134.181.62:8080",
+                          "timeoutSeconds":  10,
+                          "healthPath":  "/healthz"
+                      }
+}

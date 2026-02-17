@@ -1,0 +1,7 @@
+
+# Automation artifacts (do NOT commit)
+artifacts/
+archive/
+*.log
+*.zip
+*.tmp
