@@ -1,0 +1,27 @@
+﻿name: Queue Unity Job
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  queue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Queue build job to Command Center
+        env:
+          COMMAND_CENTER_URL: http://3.134.181.62:8080
+          COMMAND_CENTER_TOKEN: ${{ secrets.COMMAND_CENTER_TOKEN }}
+        run: |
+          if [ -z "$COMMAND_CENTER_TOKEN" ]; then
+            echo "Missing GitHub Secret: COMMAND_CENTER_TOKEN"
+            exit 1
+          fi
+
+          payload='{"type":"build_windows","payload":{"buildName":"DripKings","source":"github_actions","ref":"'"$GITHUB_REF"'","sha":"'"$GITHUB_SHA"'"}}'
+          echo "POST $COMMAND_CENTER_URL/jobs"
+          curl -sS -X POST "$COMMAND_CENTER_URL/jobs" \
+            -H "Authorization: Bearer $COMMAND_CENTER_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
