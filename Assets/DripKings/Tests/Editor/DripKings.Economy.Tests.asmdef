@@ -1,0 +1,6 @@
+{
+  "name": "DripKings.Economy.Tests",
+  "references": ["DripKings.Economy"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
