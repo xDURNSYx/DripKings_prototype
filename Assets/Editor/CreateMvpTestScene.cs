@@ -27,7 +27,7 @@ namespace DripKings.EditorTools
             car.AddComponent<ArcadeCarController>();
 
             var cameraObject = new GameObject("MVP Chase Camera");
-            var camera = cameraObject.AddComponent<Camera>();
+            cameraObject.AddComponent<Camera>();
             camera.tag = "MainCamera";
             cameraObject.AddComponent<AudioListener>();
             cameraObject.transform.position = car.transform.position + new Vector3(0f, 4f, -8f);
@@ -40,6 +40,7 @@ namespace DripKings.EditorTools
             sun.transform.rotation = Quaternion.Euler(45f, -25f, 0f);
 
             var race = new GameObject("MVP Race").AddComponent<CheckpointRace>();
+            car.AddComponent<MvpRaceRestart>().Configure(race);
             Vector3[] gates = {
                 new Vector3(0f, 2f, -10f),
                 new Vector3(0f, 2f, 15f),
