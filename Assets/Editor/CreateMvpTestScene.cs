@@ -25,6 +25,10 @@ namespace DripKings.EditorTools
             car.transform.localScale = new Vector3(1.8f, 1f, 3.6f);
             car.AddComponent<Rigidbody>().mass = 1200f;
             car.AddComponent<ArcadeCarController>();
+            var garage = car.AddComponent<LocalGarage>();
+            var garageSerialized = new SerializedObject(garage);
+            garageSerialized.FindProperty("carRenderer").objectReferenceValue = car.GetComponent<Renderer>();
+            garageSerialized.ApplyModifiedPropertiesWithoutUndo();
 
             var cameraObject = new GameObject("MVP Chase Camera");
             cameraObject.AddComponent<Camera>();
