@@ -28,7 +28,7 @@ namespace DripKings.EditorTools
 
             var cameraObject = new GameObject("MVP Chase Camera");
             cameraObject.AddComponent<Camera>();
-            camera.tag = "MainCamera";
+            cameraObject.tag = "MainCamera";
             cameraObject.AddComponent<AudioListener>();
             cameraObject.transform.position = car.transform.position + new Vector3(0f, 4f, -8f);
             cameraObject.AddComponent<ChaseCamera>().SetTarget(car.transform);
