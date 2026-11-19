@@ -1,0 +1,77 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace DripKings.MVP
+{
+    /// <summary>Offline-only cosmetics and credits. No purchases, networking or real-world value.</summary>
+    public sealed class LocalGarage : MonoBehaviour
+    {
+        private const string CreditsKey = "DripKings.MVP.Credits";
+        private const string ColorKey = "DripKings.MVP.Color";
+        private static readonly Color[] Palette = { Color.red, Color.blue, Color.green, Color.yellow, Color.white };
+        [SerializeField] private Renderer carRenderer;
+        [SerializeField] private int startingCredits = 100;
+        [SerializeField] private int paintCost = 25;
+        private int credits;
+        private int colorIndex;
+        private Material runtimeMaterial;
+
+        private void Awake()
+        {
+            credits = Mathf.Max(0, PlayerPrefs.GetInt(CreditsKey, startingCredits));
+            colorIndex = Mathf.Clamp(PlayerPrefs.GetInt(ColorKey, 0), 0, Palette.Length - 1);
+            if (carRenderer != null)
+            {
+                runtimeMaterial = carRenderer.material;
+                ApplyPaint();
+            }
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.gKey.wasPressedThisFrame)
+                BuyNextPaint();
+        }
+
+        public bool BuyNextPaint()
+        {
+            if (credits < paintCost) return false;
+            credits -= paintCost;
+            colorIndex = (colorIndex + 1) % Palette.Length;
+            ApplyPaint();
+            Save();
+            return true;
+        }
+
+        public void AwardCredits(int amount)
+        {
+            if (amount <= 0) return;
+            credits = (int)Mathf.Min(int.MaxValue, (long)credits + amount);
+            Save();
+        }
+
+        private void ApplyPaint()
+        {
+            if (runtimeMaterial == null) return;
+            if (runtimeMaterial.HasProperty("_BaseColor")) runtimeMaterial.SetColor("_BaseColor", Palette[colorIndex]);
+            else if (runtimeMaterial.HasProperty("_Color")) runtimeMaterial.color = Palette[colorIndex];
+        }
+
+        private void Save()
+        {
+            PlayerPrefs.SetInt(CreditsKey, credits);
+            PlayerPrefs.SetInt(ColorKey, colorIndex);
+            PlayerPrefs.Save();
+        }
+
+        private void OnDestroy()
+        {
+            if (runtimeMaterial != null) Destroy(runtimeMaterial);
+        }
+
+        private void OnGUI()
+        {
+            GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {credits} credits | Paint {colorIndex + 1}/{Palette.Length} | G: repaint ({paintCost})");
+        }
+    }
+}
