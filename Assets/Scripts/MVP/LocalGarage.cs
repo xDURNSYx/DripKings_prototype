@@ -46,7 +46,7 @@ namespace DripKings.MVP
         public void AwardCredits(int amount)
         {
             if (amount <= 0) return;
-            credits = (int)Mathf.Min(int.MaxValue, (long)credits + amount);
+            credits = (int)System.Math.Min((long)int.MaxValue, (long)credits + amount);
             Save();
         }
 
