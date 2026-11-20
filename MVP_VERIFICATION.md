@@ -35,3 +35,14 @@ Check both exit code and `mvp-smoke.log` for the PASS marker. An exit code alone
 5. Run the executable locally, complete one race, repaint the car, restart, and record outcomes. A build success alone does not prove gameplay.
 
 For a headless build, run the Unity Editor with `-batchmode -nographics -quit -projectPath <PROJECT_ROOT> -executeMethod DripKings.EditorTools.MvpWindowsBuild.Build -logFile <LOG_PATH>`. Verify the log marker and output files. A Unity Editor license and Windows build support are required. This does not publish or upload the game.
+
+## Headless scene generation (Windows PowerShell)
+Run from the Unity project root with the matching Editor installed, while no other Unity Editor instance has this project open. The generator refuses to overwrite an existing test scene. In batch mode it skips the interactive save prompt because a fresh temporary scene is created; use a clean working tree first.
+
+```powershell
+& "<UNITY_EDITOR_EXE>" -batchmode -nographics -quit -projectPath (Get-Location).Path -executeMethod DripKings.EditorTools.CreateMvpTestScene.Create -logFile ".\\mvp-scene.log"
+$LASTEXITCODE
+Test-Path ".\\Assets\\DripKings_MVP_Test.unity"
+```
+
+Require exit code 0, a saved scene file, and no compile errors in `mvp-scene.log`. The scene is generated locally and is not committed or published automatically. Then run smoke tests and the Windows build in separate Unity processes; inspect each log and output. Do not run these commands concurrently against one project.
