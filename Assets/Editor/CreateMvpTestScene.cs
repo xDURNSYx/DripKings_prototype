@@ -18,7 +18,8 @@ namespace DripKings.EditorTools
                 Debug.LogWarning("MVP scene already exists. Open or rename it before generating a new one.");
                 return;
             }
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            // Batchmode has no interactive save prompt; it starts from a fresh scene only.
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
