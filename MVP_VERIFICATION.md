@@ -13,7 +13,7 @@ Unity project version: 6000.3.2f1. Use the development branch `feature/mvp-drivi
 1. Select **Drip Kings > MVP > Create Test Scene**. This does not overwrite an existing scene and prompts to save modified scenes.
 2. Open `Assets/DripKings_MVP_Test.unity` and enter Play Mode.
 3. Drive using WASD/arrows; Space reduces grip; Shift brakes; R resets car and lap.
-4. Cross checkpoint triggers in order 0, 1, 2, 3. Confirm timer finishes, exactly 50 local credits are awarded, and G spends 25 credits to repaint.
+4. Drive between the visible pairs of checkpoint posts in order 0, 1, 2, 3 (the posts are visual guides, not collision barriers). Confirm timer finishes, exactly 50 local credits are awarded, and G spends 25 credits to repaint.
 5. Restart and check timer/checkpoint state; quit/re-enter Play Mode and confirm local credit/paint persistence.
 6. Record actual outcomes, Unity Console errors, and Editor version. The course is only a provisional test layout.
 
