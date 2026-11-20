@@ -7,6 +7,10 @@ namespace DripKings.MVP
     {
         [SerializeField] private int checkpointCount = 4;
         [SerializeField] private int lapsToFinish = 1;
+        [SerializeField] private LocalGarage garage;
+        [SerializeField, Min(0)] private int finishReward = 50;
+
+        public void Configure(LocalGarage targetGarage) => garage = targetGarage;
         private int nextCheckpoint;
         private int completedLaps;
         private float startTime;
@@ -40,6 +44,7 @@ namespace DripKings.MVP
             {
                 finishTime = Time.time - startTime;
                 finished = true;
+                if (garage != null) garage.AwardCredits(finishReward);
             }
         }
 
