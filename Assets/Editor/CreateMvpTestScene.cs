@@ -44,6 +44,7 @@ namespace DripKings.EditorTools
             sun.transform.rotation = Quaternion.Euler(45f, -25f, 0f);
 
             var race = new GameObject("MVP Race").AddComponent<CheckpointRace>();
+            race.Configure(garage);
             car.AddComponent<MvpRaceRestart>().Configure(race);
             Vector3[] gates = {
                 new Vector3(0f, 2f, -10f),
