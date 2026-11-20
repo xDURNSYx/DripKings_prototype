@@ -26,3 +26,12 @@ $LASTEXITCODE
 ```
 
 Check both exit code and `mvp-smoke.log` for the PASS marker. An exit code alone does not establish passing assertions. A playable Windows build and multiplayer test have **not** been verified.
+
+## Windows development build (not yet executed)
+1. Run the smoke test and inspect the Console. Save the generated MVP test scene.
+2. Select **Drip Kings > MVP > Build Windows Development Player**.
+3. A successful build logs `DRIP_KINGS_MVP_BUILD_PASS` and creates `Builds/MVP/DripKings.exe` with supporting Unity data.
+4. If `Builds/MVP` already exists, rename or move it first; the build command intentionally refuses to overwrite it.
+5. Run the executable locally, complete one race, repaint the car, restart, and record outcomes. A build success alone does not prove gameplay.
+
+For a headless build, run the Unity Editor with `-batchmode -nographics -quit -projectPath <PROJECT_ROOT> -executeMethod DripKings.EditorTools.MvpWindowsBuild.Build -logFile <LOG_PATH>`. Verify the log marker and output files. A Unity Editor license and Windows build support are required. This does not publish or upload the game.
