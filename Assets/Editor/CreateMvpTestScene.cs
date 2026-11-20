@@ -66,8 +66,19 @@ namespace DripKings.EditorTools
                 gate.name = "Checkpoint " + i;
                 gate.transform.position = gates[i];
                 gate.transform.localScale = new Vector3(10f, 4f, 0.4f);
+                // Keep the trigger invisible, but give players visible gate posts to aim between.
                 gate.GetComponent<MeshRenderer>().enabled = false;
                 gate.AddComponent<RaceCheckpoint>().Configure(race, i);
+
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    var post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    post.name = "Checkpoint " + i + (side < 0 ? " Left Post" : " Right Post");
+                    post.transform.position = gates[i] + new Vector3(side * 5.5f, 0f, 0f);
+                    post.transform.localScale = new Vector3(0.6f, 2f, 0.6f);
+                    // Visual guides only; the invisible gate is the sole checkpoint trigger.
+                    UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>());
+                }
             }
 
             EditorSceneManager.SaveScene(scene, path);
