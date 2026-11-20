@@ -12,6 +12,13 @@ namespace DripKings.EditorTools
         [MenuItem("Drip Kings/MVP/Create Test Scene")]
         public static void Create()
         {
+            const string path = "Assets/DripKings_MVP_Test.unity";
+            if (System.IO.File.Exists(path))
+            {
+                Debug.LogWarning("MVP scene already exists. Open or rename it before generating a new one.");
+                return;
+            }
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -62,7 +69,6 @@ namespace DripKings.EditorTools
                 gate.AddComponent<RaceCheckpoint>().Configure(race, i);
             }
 
-            const string path = "Assets/DripKings_MVP_Test.unity";
             EditorSceneManager.SaveScene(scene, path);
             AssetDatabase.SaveAssets();
             Debug.Log("Drip Kings test scene saved to " + path + ". Open it and press Play.");
