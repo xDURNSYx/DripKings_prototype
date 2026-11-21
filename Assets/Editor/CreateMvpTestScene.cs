@@ -67,7 +67,7 @@ namespace DripKings.EditorTools
                 gate.transform.position = gates[i];
                 gate.transform.localScale = new Vector3(10f, 4f, 0.4f);
                 // Rotate the X-travel gates so their thin trigger axis faces the approach.
-                if (i >= 2) gate.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                if (i == 2) gate.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                 // Keep the trigger invisible, but give players visible gate posts to aim between.
                 gate.GetComponent<MeshRenderer>().enabled = false;
                 gate.AddComponent<RaceCheckpoint>().Configure(race, i);
@@ -76,8 +76,8 @@ namespace DripKings.EditorTools
                 {
                     var post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                     post.name = "Checkpoint " + i + (side < 0 ? " Left Post" : " Right Post");
-                    // Gates 0/1 cross along Z; gates 2/3 cross along X, so rotate the guide-post pair accordingly.
-                    Vector3 lateral = i < 2 ? Vector3.right : Vector3.forward;
+                    // Gates 0, 1 and 3 cross along Z; gate 2 crosses along X. Match the guide posts to each trigger.
+                    Vector3 lateral = i == 2 ? Vector3.forward : Vector3.right;
                     post.transform.position = gates[i] + lateral * (side * 5.5f);
                     post.transform.localScale = new Vector3(0.6f, 2f, 0.6f);
                     // Visual guides only; the invisible gate is the sole checkpoint trigger.
