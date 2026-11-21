@@ -66,6 +66,8 @@ namespace DripKings.EditorTools
                 gate.name = "Checkpoint " + i;
                 gate.transform.position = gates[i];
                 gate.transform.localScale = new Vector3(10f, 4f, 0.4f);
+                // Rotate the X-travel gates so their thin trigger axis faces the approach.
+                if (i >= 2) gate.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                 // Keep the trigger invisible, but give players visible gate posts to aim between.
                 gate.GetComponent<MeshRenderer>().enabled = false;
                 gate.AddComponent<RaceCheckpoint>().Configure(race, i);
