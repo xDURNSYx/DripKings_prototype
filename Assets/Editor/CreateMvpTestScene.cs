@@ -74,7 +74,9 @@ namespace DripKings.EditorTools
                 {
                     var post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                     post.name = "Checkpoint " + i + (side < 0 ? " Left Post" : " Right Post");
-                    post.transform.position = gates[i] + new Vector3(side * 5.5f, 0f, 0f);
+                    // Gates 0/1 cross along Z; gates 2/3 cross along X, so rotate the guide-post pair accordingly.
+                    Vector3 lateral = i < 2 ? Vector3.right : Vector3.forward;
+                    post.transform.position = gates[i] + lateral * (side * 5.5f);
                     post.transform.localScale = new Vector3(0.6f, 2f, 0.6f);
                     // Visual guides only; the invisible gate is the sole checkpoint trigger.
                     UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>());
