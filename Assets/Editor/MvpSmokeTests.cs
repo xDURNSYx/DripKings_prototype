@@ -38,6 +38,14 @@ namespace DripKings.EditorTools
                 Check(!race.Finished && race.CompletedLaps == 0 && race.NextCheckpoint == 0, "restart clears progress");
                 Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 6 assertions passed");
             }
+            catch (Exception exception)
+            {
+                Debug.LogError("DRIP_KINGS_MVP_SMOKE_FAIL: " + exception);
+                // In headless automation, explicitly return failure rather than relying on Unity logs.
+                if (Application.isBatchMode)
+                    EditorApplication.Exit(1);
+                throw;
+            }
             finally
             {
                 UnityEngine.Object.DestroyImmediate(go);
