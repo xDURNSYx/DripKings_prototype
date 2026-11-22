@@ -8,6 +8,17 @@ if (!(Test-Path -LiteralPath $UnityExe -PathType Leaf)) { throw "Unity.exe not f
 foreach ($folder in @('Assets','Packages','ProjectSettings')) {
     if (!(Test-Path (Join-Path $root $folder))) { throw "Not a Unity project root: missing $folder" }
 }
+# Refuse to generate scenes or builds over an uncommitted working tree.
+# Git must be available; this script is intentionally for a checked-out repository.
+$git = Get-Command git -ErrorAction SilentlyContinue
+if (-not $git) { throw 'Git is required for the clean-working-tree safety check.' }
+& git -C $root rev-parse --is-inside-work-tree *> $null
+if ($LASTEXITCODE -ne 0) { throw 'Project is not inside a Git working tree.' }
+$changes = @(& git -C $root status --porcelain --untracked-files=normal)
+if ($LASTEXITCODE -ne 0) { throw 'Could not inspect Git working tree.' }
+if ($changes.Count -gt 0) {
+    throw 'Working tree has modified or untracked files. Commit/stash them or use a clean worktree before running verification.'
+}
 $logs = Join-Path $root ('MvpVerification_' + (Get-Date -Format 'yyyyMMdd_HHmmss'))
 New-Item -ItemType Directory -Path $logs -ErrorAction Stop | Out-Null
 function Invoke-UnityStep([string]$name,[string]$method,[string]$marker) {
