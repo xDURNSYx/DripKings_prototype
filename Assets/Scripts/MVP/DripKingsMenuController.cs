@@ -15,6 +15,7 @@ namespace DripKings.MVP
         private static DripKingsMenuController instance;
         private Page page = Page.Title;
         private bool raceLoaded;
+        private GarageVehiclePreview garagePreview;
 
         private GUIStyle primaryButton;
         private GUIStyle secondaryButton;
@@ -30,6 +31,7 @@ namespace DripKings.MVP
 
         // Other MVP components can keep their existing HUD and controls while a race is running.
         public static bool IsGameplayActive => instance == null || instance.page == Page.Race;
+        public static bool IsGarageOpen => instance != null && instance.page == Page.Garage;
 
         private void Awake()
         {
@@ -45,6 +47,7 @@ namespace DripKings.MVP
             raceLoaded = SceneManager.GetActiveScene().name == RacingScene;
             Time.timeScale = 1f;
             SceneManager.sceneLoaded += OnSceneLoaded;
+            garagePreview = gameObject.AddComponent<GarageVehiclePreview>();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -206,14 +209,24 @@ namespace DripKings.MVP
             DrawPanel("THE GARAGE", "MAKE IT YOURS");
             int credits = LocalGarage.SavedCredits;
             int paint = LocalGarage.SavedPaintIndex;
-            Label(new Rect(208, 316, 450, 52), "LOCAL CREDITS", 22, Muted);
-            Label(new Rect(208, 363, 450, 72), credits.ToString(), 58, Gold, TextAnchor.MiddleLeft, FontStyle.Bold);
-            Label(new Rect(665, 312, 425, 42), "PAINT STYLE  " + (paint + 1) + " / " + LocalGarage.PaintStyleCount, 23, Cream);
-            Label(new Rect(665, 363, 425, 40), "NEXT COLOR:  " + LocalGarage.PaintCost + " CREDITS", 18, Muted);
-            if (Button(new Rect(675, 435, 378, 66), "BUY NEXT PAINT", true))
+            if (garagePreview != null && garagePreview.Texture != null)
+            {
+                GUI.DrawTexture(new Rect(190, 311, 520, 208), garagePreview.Texture,
+                    ScaleMode.ScaleToFit, false);
+                Label(new Rect(365, 518, 330, 25), "ROTATING SHOWROOM CAR", 13, Muted,
+                    TextAnchor.MiddleCenter);
+            }
+
+            Label(new Rect(744, 309, 330, 32), "LOCAL CREDITS", 17, Muted);
+            Label(new Rect(744, 341, 330, 70), credits.ToString(), 47, Gold,
+                TextAnchor.MiddleLeft, FontStyle.Bold);
+            Label(new Rect(744, 402, 330, 35),
+                "PAINT  " + (paint + 1) + " / " + LocalGarage.PaintStyleCount, 22, Cream);
+            if (Button(new Rect(744, 448, 315, 64),
+                "REPAINT  - " + LocalGarage.PaintCost + " CR", true))
                 BuyPaint();
             if (credits < LocalGarage.PaintCost)
-                Label(new Rect(675, 504, 370, 24), "Not enough credits. Finish races to earn more.", 16, Gold);
+                Label(new Rect(744, 516, 340, 28), "Race to earn more credits.", 15, Gold);
             DrawBackButton();
         }
 

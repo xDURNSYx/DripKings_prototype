@@ -15,6 +15,7 @@ namespace DripKings.MVP
         public static int PaintStyleCount => Palette.Length;
         public static int SavedCredits => Mathf.Max(0, PlayerPrefs.GetInt(CreditsKey, 100));
         public static int SavedPaintIndex => Mathf.Clamp(PlayerPrefs.GetInt(ColorKey, 0), 0, Palette.Length - 1);
+        public static Color SavedPaintColor => Palette[SavedPaintIndex];
 
         public static bool BuySavedPaint()
         {
