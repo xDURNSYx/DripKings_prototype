@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/DripKings_StartMenu.unity
+    guid: 8ed7a340149c1b24f8675c7b1b2c757f
+  - enabled: 1
+    path: Assets/DripKings_MVP_Test.unity
+    guid: 8a97cf11a7415b849bcf49b86e59b712
+  - enabled: 1
     path: Assets/Scenes/NetcodeBootstrap.unity
     guid: f5a93bc41ea7426390174edbcfc352bd
   - enabled: 1

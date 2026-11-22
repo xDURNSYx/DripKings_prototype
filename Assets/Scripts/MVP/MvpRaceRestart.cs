@@ -23,7 +23,7 @@ namespace DripKings.MVP
 
         private void Update()
         {
-            if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            if (DripKingsMenuController.IsGameplayActive && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
                 Restart();
         }
 

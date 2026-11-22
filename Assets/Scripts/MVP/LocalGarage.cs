@@ -9,6 +9,22 @@ namespace DripKings.MVP
         private const string CreditsKey = "DripKings.MVP.Credits";
         private const string ColorKey = "DripKings.MVP.Color";
         private static readonly Color[] Palette = { Color.red, Color.blue, Color.green, Color.yellow, Color.white };
+
+        // Shared saved values let the title-menu garage work before the racing scene is loaded.
+        public const int PaintCost = 25;
+        public static int PaintStyleCount => Palette.Length;
+        public static int SavedCredits => Mathf.Max(0, PlayerPrefs.GetInt(CreditsKey, 100));
+        public static int SavedPaintIndex => Mathf.Clamp(PlayerPrefs.GetInt(ColorKey, 0), 0, Palette.Length - 1);
+
+        public static bool BuySavedPaint()
+        {
+            int credits = SavedCredits;
+            if (credits < PaintCost) return false;
+            PlayerPrefs.SetInt(CreditsKey, credits - PaintCost);
+            PlayerPrefs.SetInt(ColorKey, (SavedPaintIndex + 1) % Palette.Length);
+            PlayerPrefs.Save();
+            return true;
+        }
         [SerializeField] private Renderer carRenderer;
         [SerializeField] private int startingCredits = 100;
         [SerializeField] private int paintCost = 25;
@@ -29,7 +45,7 @@ namespace DripKings.MVP
 
         private void Update()
         {
-            if (Keyboard.current != null && Keyboard.current.gKey.wasPressedThisFrame)
+            if (DripKingsMenuController.IsGameplayActive && Keyboard.current != null && Keyboard.current.gKey.wasPressedThisFrame)
                 BuyNextPaint();
         }
 
@@ -71,6 +87,7 @@ namespace DripKings.MVP
 
         private void OnGUI()
         {
+            if (!DripKingsMenuController.IsGameplayActive) return;
             GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {credits} credits | Paint {colorIndex + 1}/{Palette.Length} | G: repaint ({paintCost})");
         }
     }

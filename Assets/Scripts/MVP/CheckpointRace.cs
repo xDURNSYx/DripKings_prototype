@@ -50,6 +50,7 @@ namespace DripKings.MVP
 
         private void OnGUI()
         {
+            if (!DripKingsMenuController.IsGameplayActive) return;
             GUI.Label(new Rect(16, 16, 420, 28), finished
                 ? $"FINISH! {finishTime:F2}s"
                 : $"Lap {completedLaps + 1}/{lapsToFinish}  Gate {nextCheckpoint + 1}/{checkpointCount}  Time {ElapsedSeconds:F2}s");
