@@ -52,6 +52,10 @@ namespace DripKings.MVP
 
         public bool BuyNextPaint()
         {
+            // Menu purchases may have changed PlayerPrefs since this scene loaded.
+            // Refresh before spending so stale scene state cannot overwrite saved credits.
+            credits = SavedCredits;
+            colorIndex = SavedPaintIndex;
             if (credits < paintCost) return false;
             credits -= paintCost;
             colorIndex = (colorIndex + 1) % Palette.Length;
@@ -63,7 +67,10 @@ namespace DripKings.MVP
         public void AwardCredits(int amount)
         {
             if (amount <= 0) return;
+            credits = SavedCredits;
+            colorIndex = SavedPaintIndex;
             credits = (int)System.Math.Min((long)int.MaxValue, (long)credits + amount);
+            ApplyPaint();
             Save();
         }
 

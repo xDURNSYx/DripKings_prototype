@@ -36,7 +36,36 @@ namespace DripKings.EditorTools
 
                 race.ResetRace();
                 Check(!race.Finished && race.CompletedLaps == 0 && race.NextCheckpoint == 0, "restart clears progress");
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 6 assertions passed");
+                // Preserve the operator's existing local progress even if an assertion fails.
+                const string creditsKey = "DripKings.MVP.Credits";
+                const string paintKey = "DripKings.MVP.Color";
+                bool hadCredits = PlayerPrefs.HasKey(creditsKey);
+                bool hadPaint = PlayerPrefs.HasKey(paintKey);
+                int oldCredits = PlayerPrefs.GetInt(creditsKey);
+                int oldPaint = PlayerPrefs.GetInt(paintKey);
+                try
+                {
+                    PlayerPrefs.SetInt(creditsKey, 25);
+                    PlayerPrefs.SetInt(paintKey, 0);
+                    PlayerPrefs.Save();
+                    Check(LocalGarage.BuySavedPaint(), "menu paint purchase succeeds");
+                    Check(LocalGarage.SavedCredits == 0 && LocalGarage.SavedPaintIndex == 1, "menu paint purchase persists");
+                    Check(!LocalGarage.BuySavedPaint() && LocalGarage.SavedCredits == 0, "insufficient credits rejected");
+                    var garage = go.AddComponent<LocalGarage>();
+                    garage.AwardCredits(30);
+                    Check(LocalGarage.SavedCredits == 30 && LocalGarage.SavedPaintIndex == 1, "race reward preserves menu paint");
+                    Check(garage.BuyNextPaint(), "race paint purchase succeeds");
+                    Check(LocalGarage.SavedCredits == 5 && LocalGarage.SavedPaintIndex == 2, "race paint purchase persists");
+                }
+                finally
+                {
+                    if (hadCredits) PlayerPrefs.SetInt(creditsKey, oldCredits);
+                    else PlayerPrefs.DeleteKey(creditsKey);
+                    if (hadPaint) PlayerPrefs.SetInt(paintKey, oldPaint);
+                    else PlayerPrefs.DeleteKey(paintKey);
+                    PlayerPrefs.Save();
+                }
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 12 assertions passed");
             }
             catch (Exception exception)
             {
