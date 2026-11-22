@@ -1,8 +1,16 @@
 # Drip Kings offline MVP verification
 
-Status: **not yet compiled, played, or built in Unity**. These are reproducible local steps, not completed test results.
+Status (2026-11-22): **Unity compilation, six checkpoint smoke assertions, and a Windows development build passed locally. The standalone executable launched and rendered.** Manual driving, full lap/reward, garage input, restart, and persistence remain unverified.
 
 Unity project version: 6000.3.2f1. Use the development branch `feature/mvp-driving-sprint` in a clean working tree; do not overwrite local changes.
+
+## Verified execution record (2026-11-22)
+- Environment: Windows HP, Unity 6000.3.2f1, branch `feature/mvp-driving-sprint`.
+- Unity batch smoke: `DRIP_KINGS_MVP_SMOKE_PASS: 6 assertions passed`; exited with code 0. Log: local `Logs/feature-mvp-smoke.log`.
+- Unity Windows development build: `DRIP_KINGS_MVP_BUILD_PASS: Builds\MVP\DripKings.exe | bytes: 171308741`; batch exited with code 0. Log: local `Logs/feature-mvp-windows-build.log`.
+- Standalone `Builds/MVP/DripKings.exe` launched and displayed car, checkpoint guides, race timer, and 100 starting credits.
+- Attempted synthetic W and G input did not visibly change the HUD or scene; this is **not** a validated player-input test. Test real keyboard input and inspect focus/Input System behavior before calling gameplay verified.
+- No AWS, cloud deployment, public release, real-value currency, or networked gameplay involved.
 
 ## Editor smoke test
 1. Open this project in the matching Unity Editor, allow imports to complete, and resolve any Console compile errors.
@@ -25,9 +33,9 @@ Replace `<UNITY_EDITOR_EXE>` with the installed Unity.exe path and run outside a
 $LASTEXITCODE
 ```
 
-Check both exit code and `mvp-smoke.log` for the PASS marker. An exit code alone does not establish passing assertions. A playable Windows build and multiplayer test have **not** been verified.
+Check both exit code and `mvp-smoke.log` for the PASS marker. An exit code alone does not establish passing assertions. A Windows build was produced and launched, but player-control gameplay and multiplayer have **not** been verified.
 
-## Windows development build (not yet executed)
+## Windows development build (executed 2026-11-22; repeatable steps)
 1. Run the smoke test and inspect the Console. Save the generated MVP test scene.
 2. Select **Drip Kings > MVP > Build Windows Development Player**.
 3. A successful build logs `DRIP_KINGS_MVP_BUILD_PASS` and creates `Builds/MVP/DripKings.exe` with supporting Unity data.
