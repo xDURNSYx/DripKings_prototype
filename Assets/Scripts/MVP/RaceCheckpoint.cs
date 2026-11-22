@@ -6,7 +6,9 @@ namespace DripKings.MVP
     public sealed class RaceCheckpoint : MonoBehaviour
     {
         [SerializeField] private int index;
-        private CheckpointRace race;
+        // Must be serialized: scene generation configures this in edit mode,
+        // and Unity recreates components when the saved scene is loaded.
+        [SerializeField] private CheckpointRace race;
 
         public void Configure(CheckpointRace owner, int checkpointIndex)
         {
