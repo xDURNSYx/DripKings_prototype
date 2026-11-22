@@ -56,6 +56,13 @@ namespace DripKings.EditorTools
                     Check(LocalGarage.SavedCredits == 30 && LocalGarage.SavedPaintIndex == 1, "race reward preserves menu paint");
                     Check(garage.BuyNextPaint(), "race paint purchase succeeds");
                     Check(LocalGarage.SavedCredits == 5 && LocalGarage.SavedPaintIndex == 2, "race paint purchase persists");
+                    garage.AwardCredits(0);
+                    garage.AwardCredits(-10);
+                    Check(LocalGarage.SavedCredits == 5 && LocalGarage.SavedPaintIndex == 2, "nonpositive reward ignored");
+                    PlayerPrefs.SetInt(creditsKey, int.MaxValue - 2);
+                    PlayerPrefs.Save();
+                    garage.AwardCredits(10);
+                    Check(LocalGarage.SavedCredits == int.MaxValue && LocalGarage.SavedPaintIndex == 2, "reward saturates without overflow");
                 }
                 finally
                 {
@@ -65,7 +72,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 12 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 14 assertions passed");
             }
             catch (Exception exception)
             {
