@@ -49,6 +49,15 @@ namespace DripKings.EditorTools
                 raceSettings.FindProperty("lapsToFinish").intValue = 1;
                 raceSettings.ApplyModifiedPropertiesWithoutUndo();
                 race.ResetRace();
+                // A race without a configured Garage must never advertise an unearned payout.
+                race.Configure(null);
+                race.ReachCheckpoint(0);
+                race.ReachCheckpoint(1);
+                race.ReachCheckpoint(2);
+                race.ReachCheckpoint(3);
+                Check(race.Finished && race.AwardedCredits == 0, "missing garage awards no credits");
+                race.ResetRace();
+                Check(race.AwardedCredits == 0 && !race.Finished, "missing garage restart clears finish state");
                 // Preserve the operator's existing local progress even if an assertion fails.
                 const string creditsKey = "DripKings.MVP.Credits";
                 const string paintKey = "DripKings.MVP.Color";
@@ -111,7 +120,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 23 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 25 assertions passed");
             }
             catch (Exception exception)
             {
