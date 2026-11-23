@@ -72,8 +72,12 @@ namespace DripKings.EditorTools
                     race.ReachCheckpoint(2);
                     race.ReachCheckpoint(3);
                     Check(race.Finished && LocalGarage.SavedCredits == 50, "race finish awards credits once");
+                    Check(race.AwardedCredits == 50, "finish HUD tracks actual reward");
                     race.ReachCheckpoint(0);
                     Check(LocalGarage.SavedCredits == 50, "finished race cannot award twice");
+                    Check(race.AwardedCredits == 50, "duplicate checkpoint does not change displayed reward");
+                    race.ResetRace();
+                    Check(race.AwardedCredits == 0, "race restart clears displayed reward");
                     PlayerPrefs.SetInt(creditsKey, 0);
                     PlayerPrefs.Save();
                     garage.AwardCredits(30);
@@ -107,7 +111,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 20 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 23 assertions passed");
             }
             catch (Exception exception)
             {
