@@ -56,8 +56,10 @@ namespace DripKings.MVP
             // Refresh before spending so stale scene state cannot overwrite saved credits.
             credits = SavedCredits;
             colorIndex = SavedPaintIndex;
-            if (credits < paintCost) return false;
-            credits -= paintCost;
+            // Serialized costs must never be negative or allow free purchases.
+            int safePaintCost = Mathf.Max(1, paintCost);
+            if (credits < safePaintCost) return false;
+            credits -= safePaintCost;
             colorIndex = (colorIndex + 1) % Palette.Length;
             ApplyPaint();
             Save();
@@ -97,7 +99,7 @@ namespace DripKings.MVP
         {
             if (!DripKingsMenuController.IsGameplayActive) return;
             // Read the shared save so menu purchases never leave stale HUD values.
-            GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {SavedCredits} credits | Paint {SavedPaintIndex + 1}/{Palette.Length} | G: repaint ({paintCost})");
+            GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {SavedCredits} credits | Paint {SavedPaintIndex + 1}/{Palette.Length} | G: repaint ({Mathf.Max(1, paintCost)})");
         }
     }
 }

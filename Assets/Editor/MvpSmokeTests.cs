@@ -63,6 +63,17 @@ namespace DripKings.EditorTools
                     PlayerPrefs.Save();
                     garage.AwardCredits(10);
                     Check(LocalGarage.SavedCredits == int.MaxValue && LocalGarage.SavedPaintIndex == 2, "reward saturates without overflow");
+                    // A corrupted serialized price must never mint credits or allow free paint.
+                    var serializedGarage = new SerializedObject(garage);
+                    var serializedPrice = serializedGarage.FindProperty("paintCost");
+                    serializedPrice.intValue = -50;
+                    serializedGarage.ApplyModifiedPropertiesWithoutUndo();
+                    PlayerPrefs.SetInt(creditsKey, 0);
+                    PlayerPrefs.Save();
+                    Check(!garage.BuyNextPaint() && LocalGarage.SavedCredits == 0 && LocalGarage.SavedPaintIndex == 2, "negative paint price cannot grant free paint");
+                    PlayerPrefs.SetInt(creditsKey, 1);
+                    PlayerPrefs.Save();
+                    Check(garage.BuyNextPaint() && LocalGarage.SavedCredits == 0 && LocalGarage.SavedPaintIndex == 3, "negative paint price clamps to one credit");
                 }
                 finally
                 {
@@ -72,7 +83,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 14 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 16 assertions passed");
             }
             catch (Exception exception)
             {
