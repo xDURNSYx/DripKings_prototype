@@ -65,6 +65,17 @@ namespace DripKings.EditorTools
                     Check(LocalGarage.SavedCredits == 0 && LocalGarage.SavedPaintIndex == 1, "menu paint purchase persists");
                     Check(!LocalGarage.BuySavedPaint() && LocalGarage.SavedCredits == 0, "insufficient credits rejected");
                     var garage = go.AddComponent<LocalGarage>();
+                    race.Configure(garage);
+                    race.ResetRace();
+                    race.ReachCheckpoint(0);
+                    race.ReachCheckpoint(1);
+                    race.ReachCheckpoint(2);
+                    race.ReachCheckpoint(3);
+                    Check(race.Finished && LocalGarage.SavedCredits == 50, "race finish awards credits once");
+                    race.ReachCheckpoint(0);
+                    Check(LocalGarage.SavedCredits == 50, "finished race cannot award twice");
+                    PlayerPrefs.SetInt(creditsKey, 0);
+                    PlayerPrefs.Save();
                     garage.AwardCredits(30);
                     Check(LocalGarage.SavedCredits == 30 && LocalGarage.SavedPaintIndex == 1, "race reward preserves menu paint");
                     Check(garage.BuyNextPaint(), "race paint purchase succeeds");
@@ -96,7 +107,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 18 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 20 assertions passed");
             }
             catch (Exception exception)
             {
