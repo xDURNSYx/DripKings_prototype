@@ -26,6 +26,10 @@ namespace DripKings.MVP
 
         public void ResetRace()
         {
+            // Serialized values can be corrupted or edited outside the Inspector.
+            // Never allow a zero-gate or zero-lap race to award credits.
+            checkpointCount = Mathf.Max(1, checkpointCount);
+            lapsToFinish = Mathf.Max(1, lapsToFinish);
             nextCheckpoint = 0;
             completedLaps = 0;
             finished = false;

@@ -36,6 +36,19 @@ namespace DripKings.EditorTools
 
                 race.ResetRace();
                 Check(!race.Finished && race.CompletedLaps == 0 && race.NextCheckpoint == 0, "restart clears progress");
+                var raceSettings = new SerializedObject(race);
+                raceSettings.FindProperty("checkpointCount").intValue = 0;
+                raceSettings.FindProperty("lapsToFinish").intValue = -2;
+                raceSettings.ApplyModifiedPropertiesWithoutUndo();
+                race.ResetRace();
+                raceSettings.Update();
+                Check(raceSettings.FindProperty("checkpointCount").intValue == 1 && raceSettings.FindProperty("lapsToFinish").intValue == 1, "invalid race settings clamp to one");
+                race.ReachCheckpoint(0);
+                Check(race.Finished && race.CompletedLaps == 1, "clamped race completes only after gate");
+                raceSettings.FindProperty("checkpointCount").intValue = 4;
+                raceSettings.FindProperty("lapsToFinish").intValue = 1;
+                raceSettings.ApplyModifiedPropertiesWithoutUndo();
+                race.ResetRace();
                 // Preserve the operator's existing local progress even if an assertion fails.
                 const string creditsKey = "DripKings.MVP.Credits";
                 const string paintKey = "DripKings.MVP.Color";
@@ -83,7 +96,7 @@ namespace DripKings.EditorTools
                     else PlayerPrefs.DeleteKey(paintKey);
                     PlayerPrefs.Save();
                 }
-                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 16 assertions passed");
+                Debug.Log("DRIP_KINGS_MVP_SMOKE_PASS: 18 assertions passed");
             }
             catch (Exception exception)
             {
