@@ -96,7 +96,8 @@ namespace DripKings.MVP
         private void OnGUI()
         {
             if (!DripKingsMenuController.IsGameplayActive) return;
-            GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {credits} credits | Paint {colorIndex + 1}/{Palette.Length} | G: repaint ({paintCost})");
+            // Read the shared save so menu purchases never leave stale HUD values.
+            GUI.Label(new Rect(16, 70, 500, 25), $"Garage: {SavedCredits} credits | Paint {SavedPaintIndex + 1}/{Palette.Length} | G: repaint ({paintCost})");
         }
     }
 }
