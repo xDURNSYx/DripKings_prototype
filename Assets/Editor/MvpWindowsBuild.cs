@@ -17,6 +17,10 @@ namespace DripKings.EditorTools
         [MenuItem("Drip Kings/MVP/Build Branded Menu Preview")]
         public static void BuildMenuPreview() => BuildTo(Path.Combine("Builds", "MVPMenu"));
 
+        // Produce a fresh build without touching a running or previously verified executable.
+        [MenuItem("Drip Kings/MVP/Build Timestamped Windows Preview")]
+        public static void BuildTimestampedPreview() => BuildTo(Path.Combine("Builds", "MVP-preview-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")));
+
         private static void BuildTo(string outputFolder)
         {
             const string menuScene = "Assets/DripKings_StartMenu.unity";
