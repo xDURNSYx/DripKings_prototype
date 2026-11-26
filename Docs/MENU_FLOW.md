@@ -1,5 +1,7 @@
 # Drip Kings — Front-end navigation (offline MVP)
 
+**November 26, 2026 update:** The former NEWSPAPER hub button now opens the **TABLET** launcher with D-BAY, DEP BOYS, DAUTO ZONE, DK JOBS and DK GAZETTE apps. See `Docs/TABLET_APPS.md` for the current layout and navigation. The NEWSPAPER-specific flow below describes the older prototype for historical reference.
+
 ## Player flow
 - Launching the Windows player opens `DripKings_StartMenu` first, showing DRIP KINGS branding and START.
 - START (or Enter) opens the central hub with **RACE**, **GARAGE**, and **NEWSPAPER**.

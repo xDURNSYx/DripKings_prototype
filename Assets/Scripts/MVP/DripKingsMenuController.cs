@@ -16,7 +16,7 @@ namespace DripKings.MVP
         private Page page = Page.Title;
         private bool raceLoaded;
         private GarageVehiclePreview garagePreview;
-        private DripKingsNewspaperView newspaperView;
+        private DripKingsTabletView tabletView;
 
         private GUIStyle primaryButton;
         private GUIStyle secondaryButton;
@@ -49,7 +49,7 @@ namespace DripKings.MVP
             Time.timeScale = 1f;
             SceneManager.sceneLoaded += OnSceneLoaded;
             garagePreview = gameObject.AddComponent<GarageVehiclePreview>();
-            newspaperView = gameObject.AddComponent<DripKingsNewspaperView>();
+            tabletView = gameObject.AddComponent<DripKingsTabletView>();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -77,6 +77,7 @@ namespace DripKings.MVP
             if (keyboard.escapeKey.wasPressedThisFrame)
             {
                 if (page == Page.Race) OpenHub();
+                else if (page == Page.Newspaper && tabletView != null && !tabletView.AtHome) tabletView.GoHome();
                 else if (page == Page.Garage || page == Page.Newspaper) OpenHub();
                 else if (page == Page.Hub && raceLoaded) OpenRace();
             }
@@ -113,6 +114,7 @@ namespace DripKings.MVP
         {
             if (raceLoaded) Time.timeScale = 0f;
             page = Page.Newspaper;
+            if (tabletView != null) tabletView.GoHome();
         }
 
         private void BuyPaint()
@@ -196,12 +198,12 @@ namespace DripKings.MVP
                 OpenRace();
             if (Button(new Rect(480, 316, 320, 112), "GARAGE", false))
                 OpenGarage();
-            if (Button(new Rect(830, 316, 320, 112), "NEWSPAPER", false))
+            if (Button(new Rect(830, 316, 320, 112), "TABLET", false))
                 OpenNewspaper();
 
             Label(new Rect(130, 445, 320, 38), "DRIVE / DRIFT / CHECKPOINTS", 14, Muted, TextAnchor.MiddleCenter);
             Label(new Rect(480, 445, 320, 38), "CUSTOMIZE YOUR RIDE", 14, Muted, TextAnchor.MiddleCenter);
-            Label(new Rect(830, 445, 320, 38), "THE DRIP KINGS GAZETTE", 14, Muted, TextAnchor.MiddleCenter);
+            Label(new Rect(830, 445, 320, 38), "APPS / SHOPS / CLASSIFIEDS", 14, Muted, TextAnchor.MiddleCenter);
             if (raceLoaded)
                 Label(new Rect(360, 527, 560, 40), "RACE PAUSED  •  ESC TO RESUME", 19, Gold, TextAnchor.MiddleCenter);
         }
@@ -234,10 +236,10 @@ namespace DripKings.MVP
 
         private void DrawNewspaper()
         {
-            DrawPanel("DRIP KINGS GAZETTE", "CLASSIFIEDS / JOBS / LOCAL MARKETPLACE");
-            if (newspaperView != null)
-                newspaperView.Draw(BuyPaint);
-            DrawBackButton();
+            if (tabletView != null)
+                tabletView.Draw(BuyPaint);
+            if (Button(new Rect(85, 622, 267, 37), "<  CLOSE TABLET", false))
+                OpenHub();
         }
 
         private void DrawPanel(string heading, string subheading)

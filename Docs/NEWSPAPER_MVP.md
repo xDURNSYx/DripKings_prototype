@@ -1,4 +1,6 @@
-# Drip Kings Gazette — first working classifieds economy
+# Drip Kings Gazette — first working classifieds economy (historical first iteration)
+
+**November 26, 2026:** The newspaper has evolved into a **DRIP KINGS TABLET** with fictional D-BAY, DEP BOYS, DAUTO ZONE, DK JOBS and DK GAZETTE apps. The local credits/parts/install/shop logic in this document remains active. Current user experience and app routing: `Docs/TABLET_APPS.md`.
 
 ## Goal
 The Newspaper is the central entrypoint for jobs, vehicle parts, paid mechanic labor, paint services, and businesses for sale. This first milestone is **single-player local simulation using in-game credits**. Nothing here is a live marketplace, player-to-player transaction, real-money charge, or token transfer.
