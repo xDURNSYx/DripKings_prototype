@@ -16,6 +16,7 @@ namespace DripKings.MVP
         private Page page = Page.Title;
         private bool raceLoaded;
         private GarageVehiclePreview garagePreview;
+        private DripKingsNewspaperView newspaperView;
 
         private GUIStyle primaryButton;
         private GUIStyle secondaryButton;
@@ -48,6 +49,7 @@ namespace DripKings.MVP
             Time.timeScale = 1f;
             SceneManager.sceneLoaded += OnSceneLoaded;
             garagePreview = gameObject.AddComponent<GarageVehiclePreview>();
+            newspaperView = gameObject.AddComponent<DripKingsNewspaperView>();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -232,12 +234,9 @@ namespace DripKings.MVP
 
         private void DrawNewspaper()
         {
-            DrawPanel("DRIP KINGS GAZETTE", "NEWS & THE COMMUNITY");
-            Label(new Rect(200, 310, 900, 52), "THE NEWSPAPER IS COMING SOON", 30, Gold, TextAnchor.MiddleCenter, FontStyle.Bold);
-            Label(new Rect(224, 381, 850, 70),
-                "This section will feature race announcements, results,\nand stories from the Drip Kings world.",
-                20, Cream, TextAnchor.MiddleCenter);
-            Label(new Rect(224, 478, 850, 34), "No live news feed is connected in this offline MVP.", 16, Muted, TextAnchor.MiddleCenter);
+            DrawPanel("DRIP KINGS GAZETTE", "CLASSIFIEDS / JOBS / LOCAL MARKETPLACE");
+            if (newspaperView != null)
+                newspaperView.Draw(BuyPaint);
             DrawBackButton();
         }
 

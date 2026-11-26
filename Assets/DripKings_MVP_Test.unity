@@ -1339,9 +1339,11 @@ MonoBehaviour:
   acceleration: 22
   reverseAcceleration: 11
   topSpeed: 30
-  steeringDegreesPerSecond: 115
-  normalGrip: 9
-  driftGrip: 1.8
+  steeringDegreesPerSecond: 76
+  steeringResponse: 3.5
+  normalGrip: 11
+  handbrakeGrip: 2.5
+  handbrakeDeceleration: 14
   braking: 35
   rollingDrag: 0.7
 --- !u!54 &1441009509

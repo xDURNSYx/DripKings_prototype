@@ -66,7 +66,7 @@ namespace DripKings.MVP
             GUI.Label(new Rect(16, 16, 420, 28), finished
                 ? $"FINISH! {finishTime:F2}s | +{awardedCredits} credits"
                 : $"Lap {completedLaps + 1}/{lapsToFinish}  Gate {nextCheckpoint + 1}/{checkpointCount}  Time {ElapsedSeconds:F2}s");
-            GUI.Label(new Rect(16, 42, 550, 25), "WASD / Arrows drive | Space drift | Shift brake | R restart");
+            GUI.Label(new Rect(16, 42, 550, 25), "WASD / Arrows drive | SPACE emergency brake | SHIFT foot brake | R restart");
         }
     }
 
